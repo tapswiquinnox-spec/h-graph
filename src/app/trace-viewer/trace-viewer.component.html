@@ -59,7 +59,7 @@
   <!-- Tab Content -->
   <div class="tab-content">
     <!-- Timeline View -->
-    <div *ngIf="activeTab === 'timeline'" class="trace-timeline">
+    <div *ngIf="activeTab === 'timeline'" class="tab-panel-content trace-timeline">
       <div class="timeline-header">
         <div class="time-scale">
           <span *ngFor="let tick of getTimeTicks()" class="time-tick" [style.left.%]="tick">
@@ -93,13 +93,19 @@
     </div>
 
     <!-- Flamegraph View -->
-    <app-flamegraph *ngIf="activeTab === 'flamegraph'" [request]="request" (spanClick)="onSpanClick($event)"></app-flamegraph>
+    <div *ngIf="activeTab === 'flamegraph'" class="tab-panel-content">
+      <app-flamegraph [request]="request" (spanClick)="onSpanClick($event)"></app-flamegraph>
+    </div>
 
     <!-- Flowchart View -->
-    <app-flowchart *ngIf="activeTab === 'flowchart'" [request]="request" (spanClick)="onSpanClick($event)"></app-flowchart>
+    <div *ngIf="activeTab === 'flowchart'" class="tab-panel-content">
+      <app-flowchart [request]="request" (spanClick)="onSpanClick($event)"></app-flowchart>
+    </div>
 
     <!-- Logs View -->
-    <app-trace-logs *ngIf="activeTab === 'logs'" [request]="request"></app-trace-logs>
+    <div *ngIf="activeTab === 'logs'" class="tab-panel-content">
+      <app-trace-logs [request]="request"></app-trace-logs>
+    </div>
   </div>
 
   <!-- Span Details (always visible) -->

@@ -4,6 +4,7 @@
   flex-direction: column;
   background: white;
   overflow: hidden;
+  min-height: 0;
 }
 
 .flamegraph-header {
@@ -34,6 +35,7 @@
   flex-direction: column;
   overflow: auto;
   padding: 20px;
+  min-height: 0;
 }
 
 .flamegraph-chart {

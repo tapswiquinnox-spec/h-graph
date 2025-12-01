@@ -4,6 +4,7 @@
   flex-direction: column;
   background: white;
   overflow: hidden;
+  min-height: 0;
   
   @media (max-width: 767px) {
     font-size: 0.9em;
@@ -53,7 +54,16 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
+
+.tab-panel-content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  }
 
 .trace-header {
   display: flex;
@@ -177,7 +187,6 @@
 }
 
 .trace-timeline {
-  flex: 1;
   padding: 15px;
   overflow: auto;
   background: #fafafa;
@@ -284,20 +293,28 @@
 }
 
 .trace-details {
-  padding: 15px;
-  max-height: 250px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  max-height: 50vh;
   background: white;
   border-top: 1px solid #e0e0e0;
+  min-height: 200px;
+  overflow: hidden;
   
   @media (min-width: 768px) {
-    padding: 20px;
-    max-height: 300px;
+    max-height: 40vh;
   }
 }
 
 .details-header {
-  margin-bottom: 15px;
+  padding: 15px 15px 10px 15px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #e0e0e0;
+  
+  @media (min-width: 768px) {
+    padding: 20px 20px 15px 20px;
+  }
   
   h4 {
     margin: 0 0 10px 0;
@@ -378,6 +395,15 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  padding: 15px;
+  min-height: 0;
+  
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
 }
 
 .span-item {

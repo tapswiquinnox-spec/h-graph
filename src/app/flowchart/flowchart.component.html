@@ -8,7 +8,8 @@
   </div>
   
   <div class="flowchart-content">
-    <svg [attr.width]="svgWidth" [attr.height]="svgHeight" class="flowchart-svg">
+    <div class="flowchart-svg-wrapper">
+      <svg [attr.width]="svgWidth" [attr.height]="svgHeight" class="flowchart-svg">
       <defs>
         <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
           <polygon points="0 0, 10 3, 0 6" fill="#666" />
@@ -86,6 +87,7 @@
         </g>
       </g>
     </svg>
+    </div>
   </div>
 </div>
 

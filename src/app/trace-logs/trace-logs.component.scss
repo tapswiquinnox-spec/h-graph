@@ -4,6 +4,8 @@
   flex-direction: column;
   background: #1e1e1e;
   color: #d4d4d4;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .logs-header {
@@ -137,7 +139,9 @@
 .logs-content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: auto;
   padding: 10px;
+  min-height: 0;
 }
 
 .log-entries {
