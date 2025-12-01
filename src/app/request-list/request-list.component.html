@@ -1,0 +1,111 @@
+<div class="request-list-container">
+  <div class="request-list-header">
+    <h2>API Requests</h2>
+    <p class="subtitle">Click a request to view its trace</p>
+  </div>
+  
+  <!-- Search and Filters -->
+  <div class="filters-section">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search requests..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        class="search-input"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+    
+    <div class="filter-controls">
+      <select
+        [(ngModel)]="statusFilter"
+        (change)="onStatusFilterChange()"
+        class="filter-select"
+      >
+        <option value="all">All Status</option>
+        <option value="completed">Completed</option>
+        <option value="processing">Processing</option>
+        <option value="error">Error</option>
+        <option value="pending">Pending</option>
+      </select>
+      
+      <select
+        [(ngModel)]="methodFilter"
+        (change)="onMethodFilterChange()"
+        class="filter-select"
+      >
+        <option value="all">All Methods</option>
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+        <option value="PATCH">PATCH</option>
+      </select>
+      
+      <button
+        *ngIf="searchQuery || statusFilter !== 'all' || methodFilter !== 'all'"
+        (click)="clearFilters()"
+        class="clear-filters-btn"
+      >
+        Clear Filters
+      </button>
+    </div>
+  </div>
+  
+  <div class="table-wrapper">
+    <div class="results-info">
+      Showing {{ filteredRequests.length }} of {{ requests.length }} requests
+    </div>
+    <table class="request-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Status</th>
+          <th>Duration</th>
+          <th>Spans</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let request of filteredRequests"
+          class="request-row"
+          [class.active]="selectedRequest?.id === request.id"
+          (click)="selectRequest(request)"
+        >
+          <td>
+            <span class="method-badge" [class]="'method-' + request.method.toLowerCase()">
+              {{ request.method }}
+            </span>
+          </td>
+          <td class="path-cell">
+            <span class="request-path">{{ request.path }}</span>
+          </td>
+          <td>
+            <span class="status-badge" [class]="getStatusClass(request.status)">
+              <span class="status-icon">{{ getStatusIcon(request.status) }}</span>
+              {{ request.status }}
+            </span>
+          </td>
+          <td class="duration-cell">
+            <span *ngIf="request.duration">{{ request.duration }}ms</span>
+            <span *ngIf="!request.duration">-</span>
+          </td>
+          <td class="spans-cell">
+            {{ request.trace.spans.length }} spans
+          </td>
+          <td class="timestamp-cell">
+            {{ request.timestamp | date:'HH:mm:ss.SSS' }}
+          </td>
+        </tr>
+        <tr *ngIf="filteredRequests.length === 0" class="no-results">
+          <td colspan="6" class="no-results-cell">
+            No requests found matching your filters
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

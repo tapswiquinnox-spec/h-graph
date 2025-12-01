@@ -1,0 +1,44 @@
+<div class="log-viewer-overlay" *ngIf="selectedSpan" (click)="close()">
+  <div class="log-viewer-panel" (click)="$event.stopPropagation()">
+    <div class="log-viewer-header">
+      <div class="header-content">
+        <h3>
+          <span class="span-icon">📋</span>
+          {{ selectedSpan.name }}
+        </h3>
+        <div class="span-info">
+          <span class="span-service">{{ selectedSpan.service }}</span>
+          <span class="span-type">{{ selectedSpan.type }}</span>
+          <span class="span-duration">{{ selectedSpan.duration }}ms</span>
+        </div>
+      </div>
+      <button class="close-button" (click)="close()">×</button>
+    </div>
+    
+    <div class="log-viewer-content">
+      <div class="log-header">
+        <span>Logs ({{ logs.length }})</span>
+        <span class="log-info">Loki-style log viewer</span>
+      </div>
+      <div class="log-entries">
+        <div
+          *ngFor="let log of logs"
+          class="log-entry"
+          [class]="getLogClass(log.level)"
+        >
+          <div class="log-line">
+            <span class="log-timestamp">{{ formatTimestamp(log.timestamp) }}</span>
+            <span class="log-level">{{ log.level.toUpperCase() }}</span>
+            <span class="log-message">{{ log.message }}</span>
+            <span *ngIf="formatFields(log.fields)" class="log-fields">
+              {{ formatFields(log.fields) }}
+            </span>
+          </div>
+        </div>
+        <div *ngIf="logs.length === 0" class="no-logs">
+          No logs available for this span
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,264 @@
+.request-list-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+}
+
+.filters-section {
+  padding: 15px 20px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.search-box {
+  position: relative;
+  margin-bottom: 15px;
+  
+  .search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9em;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #326ce5;
+      box-shadow: 0 0 0 3px rgba(50, 108, 229, 0.1);
+    }
+  }
+  
+  .search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+  }
+}
+
+.filter-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  
+  .filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.85em;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: #326ce5;
+    }
+  }
+  
+  .clear-filters-btn {
+    padding: 8px 15px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #e0e0e0;
+      border-color: #ccc;
+    }
+  }
+}
+
+.results-info {
+  padding: 10px 15px;
+  font-size: 0.85em;
+  color: #666;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.request-list-header {
+  padding: 20px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  
+  h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.5em;
+    color: #333;
+  }
+  
+  .subtitle {
+    margin: 0;
+    font-size: 0.9em;
+    color: #666;
+  }
+}
+
+.table-wrapper {
+  flex: 1;
+  overflow: auto;
+}
+
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  
+  thead {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    th {
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85em;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+  }
+  
+  tbody {
+    tr {
+      cursor: pointer;
+      transition: background 0.2s ease;
+      border-bottom: 1px solid #f0f0f0;
+      
+      &:hover {
+        background: #f8f9fa;
+      }
+      
+      &.active {
+        background: #e3f2fd;
+        border-left: 3px solid #326ce5;
+      }
+      
+      td {
+        padding: 12px 15px;
+        font-size: 0.9em;
+        color: #333;
+      }
+    }
+  }
+}
+
+.method-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+  
+  &.method-get {
+    background: #61affe;
+    color: white;
+  }
+  
+  &.method-post {
+    background: #49cc90;
+    color: white;
+  }
+  
+  &.method-put {
+    background: #fca130;
+    color: white;
+  }
+  
+  &.method-delete {
+    background: #f93e3e;
+    color: white;
+  }
+  
+  &.method-patch {
+    background: #50e3c2;
+    color: white;
+  }
+}
+
+.path-cell {
+  font-family: 'Courier New', monospace;
+  color: #326ce5;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  
+  .status-icon {
+    font-size: 0.9em;
+  }
+  
+  &.status-completed {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  &.status-processing {
+    background: #fff3cd;
+    color: #856404;
+    animation: pulse 2s infinite;
+  }
+  
+  &.status-error {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  &.status-pending {
+    background: #e2e3e5;
+    color: #383d41;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.duration-cell {
+  font-family: 'Courier New', monospace;
+  color: #666;
+  font-weight: 500;
+}
+
+.spans-cell {
+  color: #888;
+  font-size: 0.85em;
+}
+
+.timestamp-cell {
+  font-family: 'Courier New', monospace;
+  color: #999;
+  font-size: 0.85em;
+}
+
+.no-results {
+  .no-results-cell {
+    padding: 40px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+}

@@ -1,0 +1,91 @@
+.flowchart-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.flowchart-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h4 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  .flowchart-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85em;
+    color: #666;
+  }
+}
+
+.flowchart-content {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.flowchart-svg {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.connection-path {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    stroke-width: 3;
+    opacity: 1;
+  }
+}
+
+.flow-node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    filter: brightness(1.1);
+    stroke-width: 3;
+    transform: scale(1.05);
+    transform-origin: center;
+  }
+  
+  &.error {
+    stroke: #f93e3e;
+    stroke-width: 3;
+  }
+  
+  &.warning {
+    stroke: #fca130;
+    stroke-width: 3;
+  }
+  
+  &.processing {
+    animation: pulse-flow 2s infinite;
+  }
+}
+
+@keyframes pulse-flow {
+  0%, 100% {
+    stroke-width: 2;
+  }
+  50% {
+    stroke-width: 4;
+  }
+}
+
+.node-text {
+  pointer-events: none;
+  user-select: none;
+}
+

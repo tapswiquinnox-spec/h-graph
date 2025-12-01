@@ -1,0 +1,159 @@
+<div class="diagram-wrapper" *ngIf="request">
+  <div class="diagram-header">
+    <h3>{{ request.name }}</h3>
+    <span class="request-method">{{ request.method }} {{ request.path }}</span>
+  </div>
+  <svg [attr.width]="svgWidth" [attr.height]="svgHeight" class="k8s-diagram">
+    <!-- Definitions for gradients and filters -->
+    <defs>
+      <linearGradient id="namespaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color:#f0f4ff;stop-opacity:0.3" />
+        <stop offset="100%" style="stop-color:#e0e8ff;stop-opacity:0.1" />
+      </linearGradient>
+      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+        <feOffset dx="2" dy="2" result="offsetblur"/>
+        <feComponentTransfer>
+          <feFuncA type="linear" slope="0.3"/>
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <polygon points="0 0, 10 3, 0 6" fill="#666" />
+      </marker>
+    </defs>
+
+    <!-- Render Namespaces (background groups) -->
+    <g *ngFor="let namespace of namespaces">
+      <rect
+        [attr.x]="namespace.x"
+        [attr.y]="namespace.y"
+        [attr.width]="namespace.width"
+        [attr.height]="namespace.height"
+        fill="url(#namespaceGradient)"
+        stroke="#326ce5"
+        stroke-width="2"
+        stroke-dasharray="5,5"
+        rx="8"
+        opacity="0.5"
+      />
+      <text
+        [attr.x]="namespace.x + 20"
+        [attr.y]="namespace.y + 25"
+        font-family="Arial, sans-serif"
+        font-size="16"
+        font-weight="bold"
+        fill="#326ce5"
+        opacity="0.8"
+      >
+        {{ namespace.name }} Namespace
+      </text>
+    </g>
+
+    <!-- Render Connections -->
+    <g class="connections">
+      <g *ngFor="let connection of connections">
+        <g *ngIf="findResource(connection.source) && findResource(connection.target)">
+          <path
+            [attr.d]="getConnectionPath(findResource(connection.source)!, findResource(connection.target)!)"
+            stroke="#666"
+            stroke-width="2"
+            fill="none"
+            marker-end="url(#arrowhead)"
+            opacity="0.6"
+            class="connection-path"
+          />
+          <text
+            [attr.x]="(findResource(connection.source)!.x + findResource(connection.source)!.width / 2 + findResource(connection.target)!.x + findResource(connection.target)!.width / 2) / 2"
+            [attr.y]="(findResource(connection.source)!.y + findResource(connection.source)!.height + findResource(connection.target)!.y) / 2 - 5"
+            font-family="Arial, sans-serif"
+            font-size="11"
+            fill="#555"
+            text-anchor="middle"
+            class="protocol-label"
+          >
+            {{ connection.protocol }}
+            <tspan *ngIf="connection.label" x="0" dy="12" font-size="9" fill="#777">
+              {{ connection.label }}
+            </tspan>
+          </text>
+        </g>
+      </g>
+    </g>
+
+    <!-- Render Resources -->
+    <g class="resources">
+      <g *ngFor="let resource of allResources">
+        <!-- Main Resource Box -->
+        <rect
+          [attr.x]="resource.x"
+          [attr.y]="resource.y"
+          [attr.width]="resource.width"
+          [attr.height]="resource.height"
+          [attr.fill]="resource.color"
+          stroke="#fff"
+          stroke-width="2"
+          rx="8"
+          filter="url(#shadow)"
+          class="resource-box"
+          [class.clickable]="true"
+          [class.status-error]="resource.status === 'error'"
+          [class.status-processing]="resource.status === 'processing'"
+          (click)="onNodeClick(resource)"
+        />
+
+        <!-- Kubernetes Icon -->
+        <text
+          [attr.x]="resource.x + 15"
+          [attr.y]="resource.y + 25"
+          font-size="20"
+          class="k8s-icon"
+        >
+          {{ getResourceIcon(resource.type) }}
+        </text>
+
+        <!-- Resource Name -->
+        <text
+          [attr.x]="resource.x + resource.width / 2"
+          [attr.y]="resource.y + resource.height / 2 + 5"
+          font-family="Arial, sans-serif"
+          font-size="12"
+          font-weight="bold"
+          fill="#fff"
+          text-anchor="middle"
+          class="resource-name"
+        >
+          {{ resource.name }}
+        </text>
+
+        <!-- Resource Type -->
+        <text
+          [attr.x]="resource.x + resource.width / 2"
+          [attr.y]="resource.y + resource.height / 2 + 20"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          fill="#fff"
+          text-anchor="middle"
+          opacity="0.9"
+          class="resource-type"
+        >
+          {{ resource.type }}
+        </text>
+
+        <!-- Status Indicator -->
+        <circle
+          [attr.cx]="resource.x + resource.width - 15"
+          [attr.cy]="resource.y + 15"
+          r="6"
+          [attr.fill]="resource.status === 'error' ? '#f93e3e' : resource.status === 'processing' ? '#fca130' : '#49cc90'"
+          stroke="#fff"
+          stroke-width="1.5"
+        />
+      </g>
+    </g>
+  </svg>
+</div>
+

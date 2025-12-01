@@ -1,0 +1,42 @@
+{
+  "name": "h-graph",
+  "version": "1.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "npx ng serve",
+    "build": "npx ng build",
+    "test": "npx ng test",
+    "lint": "npx ng lint",
+    "e2e": "npx ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^12.2.17",
+    "@angular/common": "^12.2.17",
+    "@angular/compiler": "^12.2.17",
+    "@angular/core": "^12.2.17",
+    "@angular/forms": "^12.2.17",
+    "@angular/platform-browser": "^12.2.17",
+    "@angular/platform-browser-dynamic": "^12.2.17",
+    "@angular/router": "^12.2.17",
+    "rxjs": "~6.6.7",
+    "tslib": "^2.3.1",
+    "zone.js": "~0.11.5",
+    "d3": "^7.8.5",
+    "@types/d3": "^7.4.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^12.2.17",
+    "@angular-eslint/builder": "^12.7.0",
+    "@angular-eslint/eslint-plugin": "^12.7.0",
+    "@angular-eslint/eslint-plugin-template": "^12.7.0",
+    "@angular-eslint/template-parser": "^12.7.0",
+    "@angular/cli": "^12.2.17",
+    "@angular/compiler-cli": "^12.2.17",
+    "@types/jasmine": "~3.10.3",
+    "@types/node": "^12.20.55",
+    "eslint": "^7.32.0",
+    "jasmine-core": "~4.0.1",
+    "typescript": "~4.3.5"
+  }
+}

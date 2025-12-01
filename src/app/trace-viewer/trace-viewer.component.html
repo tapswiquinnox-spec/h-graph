@@ -1,0 +1,181 @@
+<div class="trace-viewer-container" *ngIf="request">
+  <div class="trace-header">
+    <div class="trace-title">
+      <h3>{{ request.name }}</h3>
+      <span class="request-method">{{ request.method }} {{ request.path }}</span>
+    </div>
+    <button class="close-button" (click)="closeDrawer()">×</button>
+  </div>
+  
+  <div class="trace-info">
+    <div class="info-item">
+      <span class="info-label">Duration:</span>
+      <span class="info-value">{{ request.duration }}ms</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Spans:</span>
+      <span class="info-value">{{ request.trace.spans.length }}</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Status:</span>
+      <span class="info-value status-badge" [class]="'status-' + request.status">
+        {{ request.status }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="trace-tabs">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'timeline'"
+      (click)="setActiveTab('timeline')"
+    >
+      Timeline
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'flamegraph'"
+      (click)="setActiveTab('flamegraph')"
+    >
+      Flamegraph
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'flowchart'"
+      (click)="setActiveTab('flowchart')"
+    >
+      Flowchart
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab === 'logs'"
+      (click)="setActiveTab('logs')"
+    >
+      Logs
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Timeline View -->
+    <div *ngIf="activeTab === 'timeline'" class="trace-timeline">
+      <div class="timeline-header">
+        <div class="time-scale">
+          <span *ngFor="let tick of getTimeTicks()" class="time-tick" [style.left.%]="tick">
+            {{ formatTime(tick * maxDuration / 100) }}ms
+          </span>
+        </div>
+      </div>
+      
+      <div class="spans-container">
+        <div
+          *ngFor="let node of getAllSpanNodes(spanNodes)"
+          class="span-bar"
+          [style.left.px]="node.x"
+          [style.top.px]="node.y"
+          [style.width.px]="Math.max(node.width, 2)"
+          [style.height.px]="node.height"
+          [style.background]="getSpanColor(node.span)"
+          [class.error]="node.span.status === 'error'"
+          [class.warning]="node.span.status === 'warning'"
+          (click)="onSpanClick(node.span)"
+          [title]="node.span.name + ' (' + node.span.duration + 'ms)'"
+        >
+          <div class="span-content">
+            <span class="span-icon">{{ getServiceIcon(node.span.type) }}</span>
+            <span class="span-name">{{ node.span.name }}</span>
+            <span class="span-service">{{ node.span.service }}</span>
+            <span class="span-duration">{{ node.span.duration }}ms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flamegraph View -->
+    <app-flamegraph *ngIf="activeTab === 'flamegraph'" [request]="request" (spanClick)="onSpanClick($event)"></app-flamegraph>
+
+    <!-- Flowchart View -->
+    <app-flowchart *ngIf="activeTab === 'flowchart'" [request]="request" (spanClick)="onSpanClick($event)"></app-flowchart>
+
+    <!-- Logs View -->
+    <app-trace-logs *ngIf="activeTab === 'logs'" [request]="request"></app-trace-logs>
+  </div>
+
+  <!-- Span Details (always visible) -->
+  <div class="trace-details">
+    <div class="details-header">
+      <h4>Spans</h4>
+      <div class="span-filters">
+        <input
+          type="text"
+          placeholder="Search spans..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()"
+          class="search-input-small"
+        />
+        <select
+          [(ngModel)]="statusFilter"
+          (change)="onStatusFilterChange()"
+          class="filter-select-small"
+        >
+          <option value="all">All Status</option>
+          <option value="success">Success</option>
+          <option value="error">Error</option>
+          <option value="warning">Warning</option>
+          <option value="processing">Processing</option>
+        </select>
+        <select
+          [(ngModel)]="serviceFilter"
+          (change)="onServiceFilterChange()"
+          class="filter-select-small"
+        >
+          <option value="all">All Services</option>
+          <option *ngFor="let service of getUniqueServices()" [value]="service">
+            {{ service }}
+          </option>
+        </select>
+        <button
+          *ngIf="searchQuery || statusFilter !== 'all' || serviceFilter !== 'all'"
+          (click)="clearFilters()"
+          class="clear-filters-btn-small"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+    <div class="spans-list">
+      <div
+        *ngFor="let span of (searchQuery || statusFilter !== 'all' || serviceFilter !== 'all' ? filteredSpans : request.trace.spans)"
+        class="span-item"
+        [class.selected]="selectedSpan?.id === span.id"
+        (click)="onSpanClick(span)"
+      >
+        <div class="span-item-header">
+          <span class="span-type-badge" [style.background]="getSpanColor(span)">
+            {{ getServiceIcon(span.type) }}
+          </span>
+          <div class="span-item-info">
+            <div class="span-item-name">{{ span.name }}</div>
+            <div class="span-item-service">{{ span.service }}</div>
+          </div>
+          <div class="span-item-meta">
+            <span class="span-duration">{{ span.duration }}ms</span>
+            <span class="span-status" [class]="'status-' + span.status">
+              {{ span.status }}
+            </span>
+          </div>
+        </div>
+        <div class="span-item-logs" *ngIf="span.logs.length > 0">
+          <div *ngFor="let log of span.logs.slice(0, 2)" class="log-preview">
+            <span class="log-level" [class]="'level-' + log.level">{{ log.level }}</span>
+            <span class="log-message">{{ log.message }}</span>
+          </div>
+          <div *ngIf="span.logs.length > 2" class="more-logs">
+            +{{ span.logs.length - 2 }} more logs
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

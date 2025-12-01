@@ -1,0 +1,90 @@
+<div class="trace-logs-container" *ngIf="request">
+  <div class="logs-header">
+    <div class="header-left">
+      <h4>{{ selectedSpan ? selectedSpan.name + ' Logs' : 'All Logs' }}</h4>
+      <button *ngIf="selectedSpan" class="clear-filter-btn" (click)="clearSelection()">
+        Show All Logs
+      </button>
+    </div>
+    <div class="logs-info">
+      <span>Total: {{ filteredLogs.length }} logs</span>
+      <span *ngIf="selectedSpan">{{ selectedSpan.service }}</span>
+      <span *ngIf="!selectedSpan">Spans: {{ request.trace.spans.length }}</span>
+    </div>
+  </div>
+  
+  <!-- Search and Filters -->
+  <div class="logs-filters">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search logs..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+        class="search-input"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+    
+    <div class="filter-controls">
+      <select
+        [(ngModel)]="levelFilter"
+        (change)="onLevelFilterChange()"
+        class="filter-select"
+      >
+        <option value="all">All Levels</option>
+        <option value="info">Info</option>
+        <option value="debug">Debug</option>
+        <option value="warn">Warn</option>
+        <option value="error">Error</option>
+        <option value="trace">Trace</option>
+      </select>
+      
+      <select
+        [(ngModel)]="serviceFilter"
+        (change)="onServiceFilterChange()"
+        class="filter-select"
+      >
+        <option value="all">All Services</option>
+        <option *ngFor="let service of getUniqueServices()" [value]="service">
+          {{ service }}
+        </option>
+      </select>
+      
+      <button
+        *ngIf="searchQuery || levelFilter !== 'all' || serviceFilter !== 'all'"
+        (click)="clearFilters()"
+        class="clear-filters-btn"
+      >
+        Clear Filters
+      </button>
+    </div>
+  </div>
+  
+  <div class="logs-content">
+    <div class="log-entries">
+      <div
+        *ngFor="let entry of filteredLogs"
+        class="log-entry"
+        [class]="getLogClass(entry.log.level)"
+        [class.selected-span]="selectedSpan && entry.span.id === selectedSpan.id"
+      >
+        <div class="log-line">
+          <span class="log-timestamp">{{ formatTimestamp(entry.absoluteTime) }}</span>
+          <span class="log-span" [style.background]="getSpanColor(entry.span)">
+            {{ entry.span.service }}
+          </span>
+          <span class="log-level">{{ entry.log.level.toUpperCase() }}</span>
+          <span class="log-message">{{ entry.log.message }}</span>
+          <span *ngIf="formatFields(entry.log.fields)" class="log-fields">
+            {{ formatFields(entry.log.fields) }}
+          </span>
+        </div>
+      </div>
+      <div *ngIf="filteredLogs.length === 0" class="no-logs">
+        <span *ngIf="selectedSpan">No logs available for this span</span>
+        <span *ngIf="!selectedSpan">No logs available for this trace</span>
+      </div>
+    </div>
+  </div>
+</div>

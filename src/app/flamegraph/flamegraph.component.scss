@@ -1,0 +1,114 @@
+.flamegraph-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.flamegraph-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h4 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  .flamegraph-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85em;
+    color: #666;
+  }
+}
+
+.flamegraph-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 20px;
+}
+
+.flamegraph-chart {
+  flex: 1;
+  min-height: 400px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: auto;
+  background: #fafafa;
+}
+
+.flamegraph-svg {
+  width: 100%;
+  min-height: 100%;
+}
+
+.flame-bar {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+    stroke-width: 2;
+  }
+  
+  &.error {
+    stroke: #f93e3e;
+    stroke-width: 2;
+  }
+  
+  &.warning {
+    stroke: #fca130;
+    stroke-width: 2;
+  }
+  
+  &.processing {
+    animation: pulse-flame 2s infinite;
+  }
+}
+
+@keyframes pulse-flame {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.flame-text {
+  pointer-events: none;
+  user-select: none;
+}
+
+.flamegraph-legend {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85em;
+    color: #666;
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+    }
+  }
+}
+
