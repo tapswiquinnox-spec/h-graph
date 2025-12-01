@@ -30,8 +30,12 @@
 .flowchart-content {
   flex: 1;
   overflow: auto;
-  padding: 20px;
+  padding: 15px;
   background: #fafafa;
+  
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
 }
 
 .flowchart-svg {

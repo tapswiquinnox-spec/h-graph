@@ -52,9 +52,13 @@
 }
 
 .logs-filters {
-  padding: 15px 20px;
+  padding: 12px 15px;
   background: #252526;
   border-bottom: 1px solid #3e3e3e;
+  
+  @media (min-width: 768px) {
+    padding: 15px 20px;
+  }
 }
 
 .search-box {
@@ -138,7 +142,11 @@
 
 .log-entries {
   font-family: 'Courier New', monospace;
-  font-size: 0.9em;
+  font-size: 0.85em;
+  
+  @media (min-width: 768px) {
+    font-size: 0.9em;
+  }
 }
 
 .log-entry {
@@ -159,42 +167,75 @@
   .log-line {
     display: flex;
     align-items: baseline;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
+    
+    @media (min-width: 768px) {
+      gap: 12px;
+    }
   }
   
   .log-timestamp {
     color: #858585;
     font-weight: 500;
-    min-width: 100px;
+    min-width: 80px;
+    font-size: 0.9em;
+    
+    @media (min-width: 768px) {
+      min-width: 100px;
+      font-size: 1em;
+    }
   }
   
   .log-span {
-    padding: 2px 8px;
+    padding: 2px 6px;
     border-radius: 4px;
-    font-size: 0.85em;
+    font-size: 0.75em;
     font-weight: 600;
     color: white;
+    
+    @media (min-width: 768px) {
+      padding: 2px 8px;
+      font-size: 0.85em;
+    }
   }
   
   .log-level {
     font-weight: bold;
     text-transform: uppercase;
-    min-width: 60px;
-    padding: 2px 6px;
+    min-width: 50px;
+    padding: 2px 5px;
     border-radius: 3px;
-    font-size: 0.85em;
+    font-size: 0.75em;
+    
+    @media (min-width: 768px) {
+      min-width: 60px;
+      padding: 2px 6px;
+      font-size: 0.85em;
+    }
   }
   
   .log-message {
     color: #d4d4d4;
     flex: 1;
-    min-width: 200px;
+    min-width: 150px;
+    word-break: break-word;
+    
+    @media (min-width: 768px) {
+      min-width: 200px;
+      word-break: normal;
+    }
   }
   
   .log-fields {
     color: #569cd6;
-    font-size: 0.9em;
+    font-size: 0.85em;
+    word-break: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 0.9em;
+      word-break: normal;
+    }
   }
   
   &.log-info {

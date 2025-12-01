@@ -4,23 +4,36 @@
   flex-direction: column;
   background: white;
   overflow: hidden;
+  
+  @media (max-width: 767px) {
+    font-size: 0.9em;
+  }
 }
 
 .trace-tabs {
   display: flex;
   border-bottom: 1px solid #e0e0e0;
   background: #f8f9fa;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   
   .tab-button {
-    padding: 12px 20px;
+    padding: 10px 15px;
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: 500;
     color: #666;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    
+    @media (min-width: 768px) {
+      padding: 12px 20px;
+      font-size: 0.9em;
+    }
     
     &:hover {
       background: #f0f0f0;
@@ -46,26 +59,44 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
   border-bottom: 1px solid #e0e0e0;
   background: #f8f9fa;
+  flex-wrap: wrap;
+  gap: 10px;
+  
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
   
   .trace-title {
     flex: 1;
+    min-width: 200px;
     
     h3 {
       margin: 0 0 5px 0;
-      font-size: 1.3em;
+      font-size: 1.1em;
       color: #333;
+      
+      @media (min-width: 768px) {
+        font-size: 1.3em;
+      }
     }
     
     .request-method {
       font-family: 'Courier New', monospace;
-      font-size: 0.9em;
+      font-size: 0.8em;
       color: #666;
       background: white;
       padding: 4px 8px;
       border-radius: 4px;
+      display: inline-block;
+      word-break: break-all;
+      
+      @media (min-width: 768px) {
+        font-size: 0.9em;
+        word-break: normal;
+      }
     }
   }
   
@@ -93,15 +124,22 @@
 
 .trace-info {
   display: flex;
-  gap: 20px;
-  padding: 15px 20px;
+  gap: 15px;
+  padding: 12px 15px;
   background: #f8f9fa;
   border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  
+  @media (min-width: 768px) {
+    gap: 20px;
+    padding: 15px 20px;
+  }
   
   .info-item {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
     
     .info-label {
       font-size: 0.85em;
@@ -140,11 +178,15 @@
 
 .trace-timeline {
   flex: 1;
-  padding: 20px;
+  padding: 15px;
   overflow: auto;
   background: #fafafa;
   display: flex;
   flex-direction: column;
+  
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
 }
 
 .timeline-header {
@@ -176,7 +218,11 @@
 
 .spans-container {
   position: relative;
-  min-height: 400px;
+  min-height: 300px;
+  
+  @media (min-width: 768px) {
+    min-height: 400px;
+  }
 }
 
 .span-bar {
@@ -238,11 +284,16 @@
 }
 
 .trace-details {
-  padding: 20px;
-  max-height: 300px;
+  padding: 15px;
+  max-height: 250px;
   overflow-y: auto;
   background: white;
   border-top: 1px solid #e0e0e0;
+  
+  @media (min-width: 768px) {
+    padding: 20px;
+    max-height: 300px;
+  }
 }
 
 .details-header {
@@ -257,16 +308,26 @@
 
 .span-filters {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
+  
+  @media (min-width: 768px) {
+    gap: 8px;
+  }
   
   .search-input-small {
     flex: 1;
-    min-width: 150px;
-    padding: 6px 10px;
+    min-width: 120px;
+    padding: 6px 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 0.85em;
+    font-size: 0.8em;
+    
+    @media (min-width: 768px) {
+      min-width: 150px;
+      padding: 6px 10px;
+      font-size: 0.85em;
+    }
     
     &:focus {
       outline: none;
@@ -275,12 +336,17 @@
   }
   
   .filter-select-small {
-    padding: 6px 10px;
+    padding: 6px 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 0.85em;
+    font-size: 0.8em;
     background: white;
     cursor: pointer;
+    
+    @media (min-width: 768px) {
+      padding: 6px 10px;
+      font-size: 0.85em;
+    }
     
     &:focus {
       outline: none;
@@ -289,12 +355,18 @@
   }
   
   .clear-filters-btn-small {
-    padding: 6px 12px;
+    padding: 6px 10px;
     background: #f0f0f0;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 0.85em;
+    font-size: 0.8em;
     cursor: pointer;
+    white-space: nowrap;
+    
+    @media (min-width: 768px) {
+      padding: 6px 12px;
+      font-size: 0.85em;
+    }
     
     &:hover {
       background: #e0e0e0;

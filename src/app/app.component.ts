@@ -38,13 +38,21 @@ import { ApiRequest } from './models/request.model';
     }
     .app-header h1 {
       margin: 0;
-      font-size: 2em;
+      font-size: 1.5em;
       font-weight: 300;
+      
+      @media (min-width: 768px) {
+        font-size: 2em;
+      }
     }
     .subtitle {
       margin: 10px 0 0 0;
-      font-size: 1em;
+      font-size: 0.9em;
       color: #666;
+      
+      @media (min-width: 768px) {
+        font-size: 1em;
+      }
     }
     .app-main {
       flex: 1;
@@ -72,12 +80,27 @@ import { ApiRequest } from './models/request.model';
       right: 0;
       top: 0;
       bottom: 0;
-      width: 80%;
-      max-width: 1200px;
+      width: 100%;
+      max-width: 100%;
       background: white;
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
       animation: slideIn 0.3s ease;
       overflow: hidden;
+      
+      @media (min-width: 768px) {
+        width: 90%;
+        max-width: 90%;
+      }
+      
+      @media (min-width: 1024px) {
+        width: 80%;
+        max-width: 1200px;
+      }
+      
+      @media (min-width: 1440px) {
+        width: 75%;
+        max-width: 1400px;
+      }
     }
     @keyframes fadeIn {
       from { opacity: 0; }

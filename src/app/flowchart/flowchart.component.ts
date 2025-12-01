@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { RequestService } from '../services/request.service';
 import { ApiRequest, TraceSpan } from '../models/request.model';
 
@@ -16,7 +16,7 @@ interface FlowNode {
   templateUrl: './flowchart.component.html',
   styleUrls: ['./flowchart.component.scss']
 })
-export class FlowchartComponent implements OnInit, OnChanges {
+export class FlowchartComponent implements OnInit, OnDestroy, OnChanges {
   @Input() request: ApiRequest | null = null;
   @Output() spanClick = new EventEmitter<TraceSpan>();
   
@@ -25,17 +25,61 @@ export class FlowchartComponent implements OnInit, OnChanges {
   svgWidth = 1200;
   svgHeight = 600;
   
+  private resizeListener?: () => void;
+
   constructor(private requestService: RequestService) {}
 
   ngOnInit(): void {
+    this.updateDimensions();
     if (this.request) {
       this.buildFlowchart(this.request);
+    }
+    
+    // Listen for window resize
+    if (typeof window !== 'undefined') {
+      this.resizeListener = () => this.onResize();
+      window.addEventListener('resize', this.resizeListener);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (typeof window !== 'undefined' && this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['request'] && this.request) {
+      this.updateDimensions();
       this.buildFlowchart(this.request);
+    }
+  }
+
+  onResize(): void {
+    const oldWidth = this.svgWidth;
+    this.updateDimensions();
+    if (this.request && oldWidth !== this.svgWidth) {
+      this.buildFlowchart(this.request);
+    }
+  }
+
+  updateDimensions(): void {
+    // Responsive sizing
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      if (width < 768) {
+        this.svgWidth = Math.max(600, width - 40);
+        this.svgHeight = 500;
+      } else if (width < 1024) {
+        this.svgWidth = Math.max(800, width - 100);
+        this.svgHeight = 550;
+      } else if (width < 1440) {
+        this.svgWidth = Math.min(1200, width - 200);
+        this.svgHeight = 600;
+      } else {
+        this.svgWidth = 1200;
+        this.svgHeight = 600;
+      }
     }
   }
 
@@ -156,4 +200,3 @@ export class FlowchartComponent implements OnInit, OnChanges {
     this.spanClick.emit(span);
   }
 }
-
